@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>Login Page</h2>
+    <div class="login-container">
+        <form>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required pattern="^[a-zA-Z0-9_]{4,16}$"
+                title="4-16 chars, letters, numbers, underscores">
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required pattern=".{6,}" title="At least 6 characters">
+            <br>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <div id="output"></div>
+    <script>
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            var usernameRegex = /^[a-zA-Z0-9_]{4,16}$/;
+            var passwordRegex = /^.{6,}$/;
+
+            console.log(username)
+            console.log(password)
+
+            // Display the entered information
+            let output = document.getElementById("output");
+            output.innerHTML = "<h3>Entered Details:</h3>" +
+                               "Username: " + username + "<br>" +
+                               "Password: " + password;
+
+            if (!usernameRegex.test(username)) {
+                alert('Username must be 4-16 characters and can only have letters, numbers, and underscores.');
+                return;
+            }
+
+            if (!passwordRegex.test(password)) {
+                alert('Password must be at least 6 characters long.');
+                return;
+            }
+
+            if (username === 'Dhruv' && password === '123Dhruv') {
+                alert('Login successful!');
+                window.location.href = 'welcome.html'; // Redirect to the welcome page
+            } else {
+                alert('Incorrect username or password.');
+            }
+        });
+    </script>
+</body>
+</html>
