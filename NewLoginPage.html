@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 25px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            text-align: left;
+            margin: 8px 0 4px;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #bar {
+            background-color: #ddd;
+            height: 10px;
+            width: 300px;
+            margin-top: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #fill {
+            height: 10px;
+            width: 0px;
+            background-color: red;
+            transition: width 0.3s;
+        }
+
+        #message {
+            margin-top: 8px;
+            font-weight: bold;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            font-size: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #output {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #333;
+            text-align: left;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="login-container">
+        <form>
+            <h1>Login Page</h1> 
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required pattern="^[a-zA-Z0-9_]{4,16}$"
+                title="4-16 chars, letters, numbers, underscores">
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required pattern=".{6,}" title="At least 6 characters">
+            <div id="bar">
+                <div id="fill"></div>
+            </div>
+            <div id="message"></div>
+            <br>
+            <button type="submit">Login</button>
+            <div id="output"></div>
+        </form>
+    </div>
+    <script>
+        var password = document.getElementById("password");
+        var fill = document.getElementById("fill");
+        var message = document.getElementById("message");
+
+        password.oninput = function () {
+            var pwd = password.value;
+            var hasLower = false;
+            var hasUpper = false;
+            var hasNumber = false;
+            var hasSpecial = false;
+            var isLong = false;
+
+            if (pwd.length >= 8) {
+                isLong = true;
+            }
+            if (pwd.match(/[a-z]/)) {
+                hasLower = true;
+            }
+            if (pwd.match(/[A-Z]/)) {
+                hasUpper = true;
+            }
+            if (pwd.match(/[0-9]/)) {
+                hasNumber = true;
+            }
+            if (pwd.match(/[^A-Za-z0-9]/)) {
+                hasSpecial = true;
+            }
+
+            if (pwd.length === 0) {
+                fill.style.width = "0px";
+                fill.style.backgroundColor = "red";
+                message.innerText = "";
+            } else if (isLong && hasLower && hasUpper && hasNumber && hasSpecial) {
+                fill.style.width = "300px";
+                fill.style.backgroundColor = "green";
+                message.innerText = "Excellent";
+            } else if (isLong && hasLower && hasUpper && (hasNumber || hasSpecial)) {
+                fill.style.width = "240px";
+                fill.style.backgroundColor = "lime";
+                message.innerText = "Strong";
+            } else if (pwd.length >= 6 && hasLower && hasNumber) {
+                fill.style.width = "180px";
+                fill.style.backgroundColor = "yellow";
+                message.innerText = "Moderate";
+            } else if (pwd.length >= 4) {
+                fill.style.width = "120px";
+                fill.style.backgroundColor = "orange";
+                message.innerText = "Weak";
+            } else {
+                fill.style.width = "60px";
+                fill.style.backgroundColor = "red";
+                message.innerText = "Very Weak";
+            }
+        }
+
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            var usernameRegex = /^[a-zA-Z0-9_]{4,16}$/;
+            var passwordRegex = /^.{6,}$/;
+
+            console.log(username)
+            console.log(password)
+
+            // Display the entered information
+            let output = document.getElementById("output");
+            output.innerHTML = "<h3>Entered Details:</h3>" +
+                "Username: " + username + "<br>" +
+                "Password: " + password;
+
+            if (!usernameRegex.test(username)) {
+                fill.style.width = "250px";
+                fill.style.backgroundColor = "red";
+                message.innerText = "";
+                alert('Username must be 4-16 characters and can only have letters, numbers, and underscores.');
+                return;
+            }
+
+            if (!passwordRegex.test(password)) {
+                fill.style.width = "250px";
+                fill.style.backgroundColor = "red";
+                message.innerText = "";
+                alert('Password must be at least 6 characters long.');
+                return;
+            }
+
+            if (username === 'Dhruv' && password === '123Dhruv') {
+                alert('Login successful!');
+                window.location.href = 'https://www.charusat.ac.in/student-corner';    // Redirect to the welcome page
+            } else {
+                fill.style.width = "300px";
+                fill.style.backgroundColor = "red";
+                message.innerText = "";
+                alert('Incorrect username or password.');
+            }
+        });
+    </script>
+</body>
+
+</html>
